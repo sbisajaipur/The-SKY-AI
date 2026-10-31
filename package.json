@@ -1,0 +1,11 @@
+
+{
+  "name": "the-sky-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SKY AI - Beyond Imagination",
+  "type": "module",
+  "dependencies": {
+    "openai": "^6.7.0"
+  }
+}
