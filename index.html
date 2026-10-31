@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKY AI — Beyond Imagination</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  color:white;
+  background:
+    linear-gradient(135deg,rgba(20,10,45,.55),rgba(80,25,65,.35)),
+    radial-gradient(ellipse at 70% 20%,#f28b50 0%,transparent 38%),
+    linear-gradient(160deg,#30205d 0%,#a34b68 48%,#f3a05b 100%);
+  overflow:hidden;
+}
+.app{display:flex;height:100vh}
+.sidebar{
+  width:260px;padding:24px 18px;
+  background:rgba(20,15,40,.45);
+  backdrop-filter:blur(18px);
+  border-right:1px solid rgba(255,255,255,.18);
+  display:flex;flex-direction:column;gap:16px
+}
+.brand{font-size:28px;font-weight:800;letter-spacing:2px}
+.tagline{font-size:10px;letter-spacing:3px;color:#ffd7bd;margin-top:5px}
+.newchat,.sidebtn{
+  padding:13px 15px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.09);color:white;
+  text-align:left;font-size:14px;cursor:pointer
+}
+.newchat{margin-top:25px;background:rgba(255,255,255,.18)}
+.sidebtn:hover,.newchat:hover{background:rgba(255,255,255,.23)}
+.sidebar-note{margin-top:auto;font-size:12px;color:#ead9e7;line-height:1.6}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{
+  height:75px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 30px;border-bottom:1px solid rgba(255,255,255,.16);
+  background:rgba(30,15,45,.15);backdrop-filter:blur(12px)
+}
+.topbrand{font-size:18px;font-weight:bold;letter-spacing:2px}
+.status{font-size:12px;color:#ffe1c9}
+.chat-area{
+  flex:1;overflow-y:auto;padding:35px 8%;
+  display:flex;flex-direction:column;gap:22px
+}
+.welcome{text-align:center;margin:auto 0}
+.welcome h1{font-size:42px;margin-bottom:12px}
+.welcome p{color:#f9dce0;font-size:16px}
+.message{
+  max-width:78%;padding:15px 18px;border-radius:18px;
+  line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere
+}
+.user{align-self:flex-end;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.22)}
+.assistant{align-self:flex-start;background:rgba(25,15,45,.55);border:1px solid rgba(255,255,255,.16)}
+.composer-wrap{padding:18px 8% 25px}
+.composer{
+  display:flex;align-items:flex-end;gap:10px;
+  padding:12px 14px;border-radius:20px;
+  background:rgba(25,15,45,.58);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 10px 35px rgba(0,0,0,.18)
+}
+textarea{
+  flex:1;resize:none;max-height:150px;min-height:42px;
+  border:0;outline:0;background:transparent;color:white;
+  font:15px Arial;padding:12px 5px
+}
+textarea::placeholder{color:#e8d6e4}
+.send{
+  width:44px;height:44px;border:0;border-radius:14px;
+  background:#f5a36c;color:#321b3d;font-size:20px;
+  cursor:pointer;font-weight:bold
+}
+.send:disabled{opacity:.5;cursor:not-allowed}
+.disclaimer{text-align:center;font-size:11px;color:#f1dce6;margin-top:10px}
+@media(max-width:700px){
+  .sidebar{width:68px;padding:18px 8px;align-items:center}
+  .brand{font-size:17px;letter-spacing:0}
+  .tagline,.side-label,.sidebar-note{display:none}
+  .newchat,.sidebtn{width:48px;height:46px;padding:0;text-align:center;font-size:18px}
+  .topbar{padding:0 16px}
+  .chat-area{padding:25px 16px}
+  .composer-wrap{padding:12px 12px 18px}
+  .welcome h1{font-size:30px}
+  .message{max-width:90%}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div>
+      <div class="brand">SKY AI</div>
+      <div class="tagline">BEYOND IMAGINATION</div>
+    </div>
+
+    <button class="newchat" onclick="newChat()">＋ <span class="side-label">New Chat</span></button>
+    <button class="sidebtn" onclick="showNotice('Image generation')">🎨 <span class="side-label">Create Image</span></button>
+    <button class="sidebtn" onclick="showNotice('Code Assistant')">⌘ <span class="side-label">Code Assistant</span></button>
+    <button class="sidebtn" onclick="showNotice('More tools')">✦ <span class="side-label">Explore Tools</span></button>
+
+    <div class="sidebar-note">Your ideas. Your imagination.<br>One intelligent space.</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbrand">SKY AI</div>
+      <div class="status">● AI ASSISTANT</div>
+    </header>
+
+    <section class="chat-area" id="chatArea">
+      <div class="welcome" id="welcome">
+        <h1>Welcome to SKY AI</h1>
+        <p>Beyond Imagination. Ask anything, create anything.</p>
+      </div>
+    </section>
+
+    <div class="composer-wrap">
+      <div class="composer">
+        <textarea id="prompt" rows="1" placeholder="Message SKY AI..." onkeydown="handleKey(event)"></textarea>
+        <button class="send" id="sendBtn" onclick="sendMessage()">↑</button>
+      </div>
+      <div class="disclaimer">SKY AI can make mistakes. Verify important information.</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const chatArea = document.getElementById("chatArea");
+const promptBox = document.getElementById("prompt");
+const sendBtn = document.getElementById("sendBtn");
+let messages = [];
+
+function addMessage(text, role) {
+  const welcome = document.getElementById("welcome");
+  if (welcome) welcome.remove();
+
+  const div = document.createElement("div");
+  div.className = "message " + role;
+  div.textContent = text;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function newChat() {
+  messages = [];
+  chatArea.innerHTML = `
+    <div class="welcome" id="welcome">
+      <h1>Welcome to SKY AI</h1>
+      <p>Beyond Imagination. Ask anything, create anything.</p>
+    </div>`;
+  promptBox.value = "";
+}
+
+function showNotice(tool) {
+  addMessage(tool + " will be added in the next development step.", "assistant");
+}
+
+function handleKey(event) {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+}
+
+async function sendMessage() {
+  const text = promptBox.value.trim();
+  if (!text || sendBtn.disabled) return;
+
+  addMessage(text, "user");
+  messages.push({ role: "user", content: text });
+  promptBox.value = "";
+  sendBtn.disabled = true;
+  sendBtn.textContent = "…";
+
+  const loading = document.createElement("div");
+  loading.className = "message assistant";
+  loading.textContent = "SKY AI is thinking…";
+  chatArea.appendChild(loading);
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages })
+    });
+
+    const data = await response.json();
+    loading.remove();
+
+    if (!response.ok) throw new Error(data.error || "Something went wrong.");
+
+    const reply = data.reply || "I could not generate a response.";
+    addMessage(reply, "assistant");
+    messages.push({ role: "assistant", content: reply });
+
+  } catch (error) {
+    loading.remove();
+    addMessage("Connection error: " + error.message, "assistant");
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.textContent = "↑";
+    promptBox.focus();
+  }
+}
+</script>
+</body>
+</html>
